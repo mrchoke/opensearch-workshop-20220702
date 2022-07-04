@@ -1,0 +1,65 @@
+POST tambons/_analyze
+{
+  "analyzer": "whitespace",
+  "text": "สวัสดีจ้า"
+}
+
+POST tambons/_search
+{
+  "query": {
+    "match": {
+      "amphoe_t": "วัง"
+    }
+  }
+}
+
+POST tambons_thai/_search
+{
+  "query": {
+    "match": {
+      "amphoe_t": "ทาชนะ"
+    }
+  }
+}
+
+POST tambons_completion/_search
+{"size": 0, 
+  "query": {
+    "match": {
+     "amphoe_t": "ทาชนะ"
+    }
+  },
+  "suggest" : {
+    "suggestt" : {
+      "text" : "ท่าชนะ",
+      "completion": {
+        "term" : {
+        "field": "amphoe_t.completion"
+        },
+        "size": 5,
+        "skip_duplicates": "true",
+        "fuzzy": {
+          "fuzziness": 20
+        }
+      }
+    }
+  }
+  
+}
+
+POST tambons_completion/_search
+{"_source": "amphoe_e", 
+  "suggest": {
+    "song-suggest": {
+      "text": "cha",
+      "completion": {
+        "field": "amphoe_e.completion",
+        "skip_duplicates": true,
+        "fuzzy": {
+          "fuzziness": 3
+        }
+      }
+    }
+  }
+}
+

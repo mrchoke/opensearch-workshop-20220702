@@ -1,0 +1,59 @@
+filebeat:
+  inputs:
+    - type: log
+      enabled: true
+      paths:
+        - /mnt/files/tambons.csv
+      # exclude_lines: [^\"\"] 
+      processors:
+        - decode_csv_fields:
+            fields:
+              message: decoded_csv_arr
+            separator: ","
+            ignore_missing: false
+            overwrite_keys: true
+            trim_leading_space: false
+            fail_on_error: true
+            
+        - extract_array:
+            field: decoded_csv_arr
+            mappings:
+              ad_level: 0
+              ta_id: 1
+              tambon_t: 2
+              tambon_e: 3
+              am_id: 4
+              amphoe_t: 5
+              amphoe_e: 6
+              ch_id: 7
+              changwat_t: 8
+              changwat_e: 9
+              location:
+                lat: 10
+                lon: 11
+
+        # - script:
+        #     lang: javascript
+        #     id: convert_csv_into_json
+        #     file: convert_csv_to_json.js
+
+        - drop_fields:
+            fields: ["decoded_csv_arr","log","host","agent","ecs","message","input"]
+        
+        # - decode_json_fields:
+        #     fields: ["json_from_csv"]
+        #     target: ""
+
+output:
+  console:
+    pretty: true
+  # elasticsearch:
+  #   index: "tambons"
+  #   index: "tambons_thai"
+  #   index: "tambons_completion"
+  #   hosts: ["os:9200"]
+
+### Index templates
+setup.template.enabled: false
+
+logging.level: info

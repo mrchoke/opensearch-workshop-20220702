@@ -1,0 +1,7 @@
+node.name: "os"
+cluster.name: "os-cluster"
+network.host: 0.0.0.0
+discovery.type: "single-node"
+bootstrap.memory_lock: true
+compatibility.override_main_response_version: true
+# path.repo: ["/snapshots"]

@@ -1,0 +1,33 @@
+POST _ingest/pipeline/proxy/_simulate
+{
+  "docs": [
+    {
+      "_source": {
+        "message": "185.40.4.70 - - [15/Oct/2021:21:05:10 +0700] \"GET //a2billing/customer/templates/default/footer.tpl HTTP/1.1\" 444 0 \"-\" \"python-requests/2.6.0 CPython/2.7.5 Linux/3.10.0-1160.42.2.el7.x86_64\""
+      }
+    }
+  ]
+}
+
+POST _ingest/pipeline/proxy/_simulate
+{
+  "docs": [
+    {
+      "_source": {
+        "message": "49.228.226.134 - - [15/Oct/2021:21:05:06 +0700] \"GET /v1/registrants?page=1&pageSize=10&sort=-id&populate=images,appointments HTTP/2.0\" 200 5161 \"https://migrantcovid.redcross.or.th/registrants\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 Edg/94.0.992.47\""
+      }
+    }
+  ]
+}
+
+POST _ingest/pipeline/proxy/_simulate
+{
+  "docs": [
+    {
+      "_source": {
+        "message": "10.187.25.242 - - [03/Nov/2021:06:34:25 +0700] \"GET / HTTP/2.0\" 304 0 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36\""
+      }
+    }
+  ]
+}
+

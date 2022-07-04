@@ -1,0 +1,26 @@
+{
+  "index_patterns": "proxy_log*",
+  "version": 2010001,
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "index": {
+      "refresh_interval": "10s"
+    }
+  },
+  "mappings": {
+    "properties": {
+      "geoip": {
+        "dynamic": true,
+        "properties": {
+          "ip": {
+            "type": "ip"
+          },
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
+}

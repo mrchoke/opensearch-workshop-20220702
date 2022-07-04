@@ -1,0 +1,25 @@
+filebeat:
+  inputs:
+    - type: log
+      enabled: true
+      paths:
+        # - /mnt/files/access.log.*.gz
+        - /mnt/files/access.log.*
+      exclude_lines:
+        - 'GET.*ELB-HealthChecker\/'
+      tags:
+        - proxy
+        - nginx
+
+### Index templates
+setup.template.enabled: false
+
+### Outputs
+output:
+    console:
+      pretty: true
+    # elasticsearch:
+    #   hosts: ["os:9200"]
+    #   pipeline: "proxy"
+
+logging.level: info

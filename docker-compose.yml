@@ -1,0 +1,64 @@
+version: '3'
+services:
+  os:
+    build: ./dockerfile/opensearch
+    image: opensearch-workshop
+    init: true
+    restart: always
+    environment:
+      OPENSEARCH_JAVA_OPTS: "-Xms${OS_MEM:-1512M} -Xmx${OS_MEM:-1512M}"
+      logger.level: "${LOG_LEVEL:-ERROR}"
+    deploy:
+      resources:
+        limits:
+          cpus: "${OS_LIMIT_CPU:-'2'}"
+          memory: "${OS_LIMIT_MEM:-3G}"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "os-data:/usr/share/opensearch/data:rw"
+      - "./opensearch.yml:/usr/share/opensearch/config/opensearch.yml"
+    ports:
+      - "${OS_IP:-127.0.0.1}:${OS_PORT:-9200}:9200"
+    healthcheck:
+      test: curl -s -f os:9200/_cat/health >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  os-dashboard:
+    build: ./dockerfile/opensearch-dashboard
+    image: opensearch-dashboard-workshop
+    init: true
+    restart: always
+    ports:
+      - "${OS_DASHBOARD_IP:-127.0.0.1}:${OS_DASHBOARD_PORT:-5601}:5601"
+    expose:
+      - "5601"
+    depends_on:
+      os:
+        condition: service_healthy
+    volumes:
+      - "./opensearch-dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml"
+
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat-oss:7.12.1
+    profiles:
+      - beat
+    volumes:
+      - ./workshops/files:/mnt/files
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      #- ./filebeat-proxy.yml:/usr/share/filebeat/filebeat.yml:ro
+      #- ./convert_csv_to_json.js:/usr/share/filebeat/convert_csv_to_json.js:ro
+      #- ./data:/usr/share/filebeat/data
+
+volumes:
+  os-data:
+    #driver: local
+    #driver_opts:
+    #  type: none
+    #  o: bind
+    #  device: ${PWD}/os-data

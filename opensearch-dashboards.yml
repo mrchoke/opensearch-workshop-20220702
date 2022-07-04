@@ -1,0 +1,7 @@
+server.name: "os-dashboard"
+server.host: 0.0.0.0
+opensearch.hosts: ["http://os:9200"]
+logging.json: "false"
+logging.quiet: "true"
+# elasticsearch.requesttimeout: 50000
+# plugins.security.disabled: "true"
